@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "drf-todo"
+version = "0.1.0"
+description = ""
+authors = ["VinylStage <mcpe9869@gmail.com>"]
+readme = "README.md"
+packages = [{include = "drf_todo"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2"
+pip = "^23.1"
+djangorestframework-simplejwt = "^5.2.2"
+djangorestframework = "^3.14.0"
+django-dotenv = "^1.4.2"
+autopep8 = "^2.0.2"
+django-cors-headers = "^3.14.0"
+pillow = "^9.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
