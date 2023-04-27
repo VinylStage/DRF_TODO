@@ -22,14 +22,3 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-
-    def update(self, validated_data):
-        user = super().create(validated_data)
-        password = user.password
-        user.set_password(password)
-        user.save()
-        return user
-
-# 회원가입
-# 로그인
-# 팔로우
