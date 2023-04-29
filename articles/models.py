@@ -5,7 +5,8 @@ from users.models import User
 
 
 class Article(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='user',
+                             on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     is_complete = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

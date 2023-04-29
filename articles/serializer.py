@@ -3,8 +3,30 @@ from articles.models import Article
 
 
 class ArticleSerializer(serializers.Serializer):
+    id = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     title = serializers.SerializerMethodField()
+
+    def get_id(self, obj):
+        return obj.id
+
+    def get_user(self, obj):
+        return obj.user.email
+
+    def get_title(self, obj):
+        return obj.title
+
+
+class ArticleDetailSerializer(serializers.Serializer):
+    id = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+    is_complete = serializers.SerializerMethodField()
+    updated_at = serializers.SerializerMethodField()
+    created_at = serializers.SerializerMethodField()
+
+    def get_id(self, obj):
+        return obj.id
 
     def get_user(self, obj):
         return obj.user.id
@@ -29,4 +51,4 @@ class ArticleSerializer(serializers.Serializer):
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ("title", "content", "is_complete")
+        fields = "__all__"
