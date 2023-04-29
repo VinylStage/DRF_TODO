@@ -49,9 +49,3 @@ class UserEditView(APIView):
             return Response("deleted", status=status.HTTP_204_NO_CONTENT)
         else:
             return Response("You don't have andy permission to delete this user", status=status.HTTP_403_FORBIDDEN)
-
-
-# class LogoutView(APIView):
-#     def post(self, request, format=None):
-#         request.user.auth_token.delete()
-#         return Response(status=status.HTTP_200_OK)
