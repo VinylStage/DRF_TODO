@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from articles.models import Article
+from django.utils import timezone
 
 
 class ArticleSerializer(serializers.Serializer):
@@ -22,8 +23,9 @@ class ArticleDetailSerializer(serializers.Serializer):
     user = serializers.SerializerMethodField()
     title = serializers.SerializerMethodField()
     is_complete = serializers.SerializerMethodField()
-    updated_at = serializers.SerializerMethodField()
+    completion_at = serializers.SerializerMethodField()
     created_at = serializers.SerializerMethodField()
+    updated_at = serializers.SerializerMethodField()
 
     def get_id(self, obj):
         return obj.id
@@ -37,11 +39,14 @@ class ArticleDetailSerializer(serializers.Serializer):
     def get_is_complete(self, obj):
         return obj.is_complete
 
-    def get_updated_at(self, obj):
-        return obj.updated_at
+    def get_completion_at(self, obj):
+        return obj.completion_at
 
     def get_created_at(self, obj):
         return obj.created_at
+
+    def get_updated_at(self, obj):
+        return obj.updated_at
 
     class Meta:
         model = Article
@@ -51,4 +56,4 @@ class ArticleDetailSerializer(serializers.Serializer):
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = "__all__"
+        fields = ("title", "is_complete", "completion_at")

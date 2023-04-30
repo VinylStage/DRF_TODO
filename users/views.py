@@ -4,6 +4,9 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from users.serializer import UserSerializer, UserProfileSerializer
 from users.models import User
+from django.utils import timezone
+
+
 # Create your views here.
 
 
@@ -15,14 +18,16 @@ class UserView(APIView):
             serializer.save()
             return Response({"message": "welcome"}, status=status.HTTP_200_OK)
         else:
-            return Response({"message": f"${serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": f"${serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class ProfileView(APIView):
-
     def get(self, request, pk):
         user = get_object_or_404(User, id=pk)
         serializer = UserProfileSerializer(user)
+
         return Response(serializer.data)
 
 
@@ -35,12 +40,24 @@ class UserEditView(APIView):
             user = get_object_or_404(User, id=pk)
             serializer = UserProfileSerializer(user, data=request.data)
             if serializer.is_valid():
+                birth = str(user.date_of_birth)[:4]
+                nowtime = str(timezone.now())[:4]
+                agenow = int(nowtime) - int(birth)
+                user.age = agenow
                 serializer.save()
-                return Response({"Edit Complete": f"${serializer.data}"}, status=status.HTTP_200_OK)
+                return Response(
+                    {"Edit Complete": f"${serializer.data}"}, status=status.HTTP_200_OK
+                )
             else:
-                return Response({"message": f"${serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"message": f"${serializer.errors}"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         else:
-            return Response("You don't have andy permission to edit this user", status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                "You don't have andy permission to edit this user",
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
     def delete(self, request, pk):
         user = get_object_or_404(User, id=pk)
@@ -48,4 +65,7 @@ class UserEditView(APIView):
             user.delete()
             return Response("deleted", status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response("You don't have andy permission to delete this user", status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                "You don't have andy permission to delete this user",
+                status=status.HTTP_403_FORBIDDEN,
+            )
