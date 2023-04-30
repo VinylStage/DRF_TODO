@@ -21,10 +21,10 @@ class UserSerializer(serializers.ModelSerializer):
         user = super().create(validated_data)
         password = user.password
         user.set_password(password)
-        birth = str(user.date_of_birth)[:4]
-        nowtime = str(timezone.now())[:4]
-        agenow = int(nowtime) - int(birth)
-        user.age = +agenow
+        birth = str(user.date_of_birth)[:4]  # 생일에서 연도만 추출
+        nowtime = str(timezone.now())[:4]  # 현재 날짜에서 연도만 추출
+        agenow = int(nowtime) - int(birth)  # 정수변환 후 나이계산
+        user.age = agenow  # 나이 저장
         user.save()
         return user
 

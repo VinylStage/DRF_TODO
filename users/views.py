@@ -40,10 +40,10 @@ class UserEditView(APIView):
             user = get_object_or_404(User, id=pk)
             serializer = UserProfileSerializer(user, data=request.data)
             if serializer.is_valid():
-                birth = str(user.date_of_birth)[:4]
-                nowtime = str(timezone.now())[:4]
-                agenow = int(nowtime) - int(birth)
-                user.age = agenow
+                birth = str(user.date_of_birth)[:4]  # 생일에서 연도만 추출
+                nowtime = str(timezone.now())[:4]  # 현재 날짜에서 연도만 추출
+                agenow = int(nowtime) - int(birth)  # 정수변환후 나이계산
+                user.age = agenow  # 나이저장
                 serializer.save()
                 return Response(
                     {"Edit Complete": f"${serializer.data}"}, status=status.HTTP_200_OK
